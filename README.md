@@ -13,25 +13,88 @@ npx cap sync
 
 <docgen-index>
 
-* [`echo(...)`](#echo)
+* [`getVersion()`](#getversion)
+* [`start()`](#start)
+* [`stop()`](#stop)
+* [`addListener('stateChanged', ...)`](#addlistenerstatechanged-)
+* [`removeAllListeners()`](#removealllisteners)
+* [Interfaces](#interfaces)
+* [Type Aliases](#type-aliases)
 
 </docgen-index>
 
 <docgen-api>
 <!--Update the source file JSDoc comments and rerun docgen to update the docs below-->
 
-### echo(...)
+### getVersion()
 
 ```typescript
-echo(options: { value: string; }) => Promise<{ value: string; }>
+getVersion() => Promise<{ value: string; }>
 ```
-
-| Param         | Type                            |
-| ------------- | ------------------------------- |
-| **`options`** | <code>{ value: string; }</code> |
 
 **Returns:** <code>Promise&lt;{ value: string; }&gt;</code>
 
 --------------------
+
+
+### start()
+
+```typescript
+start() => Promise<void>
+```
+
+--------------------
+
+
+### stop()
+
+```typescript
+stop() => Promise<void>
+```
+
+--------------------
+
+
+### addListener('stateChanged', ...)
+
+```typescript
+addListener(eventName: 'stateChanged', listenerFunc: (data: { state: RecorderState; }) => void) => Promise<PluginListenerHandle>
+```
+
+| Param              | Type                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| **`eventName`**    | <code>'stateChanged'</code>                                                            |
+| **`listenerFunc`** | <code>(data: { state: <a href="#recorderstate">RecorderState</a>; }) =&gt; void</code> |
+
+**Returns:** <code>Promise&lt;<a href="#pluginlistenerhandle">PluginListenerHandle</a>&gt;</code>
+
+--------------------
+
+
+### removeAllListeners()
+
+```typescript
+removeAllListeners() => Promise<void>
+```
+
+--------------------
+
+
+### Interfaces
+
+
+#### PluginListenerHandle
+
+| Prop         | Type                                      |
+| ------------ | ----------------------------------------- |
+| **`remove`** | <code>() =&gt; Promise&lt;void&gt;</code> |
+
+
+### Type Aliases
+
+
+#### RecorderState
+
+<code>'idle' | 'recording'</code>
 
 </docgen-api>

@@ -2,15 +2,17 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>Audio Recorder Plugin Example</ion-title>
+        <ion-title>Audio Plugin Test</ion-title>
       </ion-toolbar>
     </ion-header>
+
     <ion-content :fullscreen="true" class="ion-padding">
 
+      <p><ion-label>Engine Version: {{ engineVersion }}</ion-label></p>
+      <p><ion-label>Engine State: {{ engineState }}</ion-label></p>
       <div>
-        <ion-input label="Input:" v-model="inputValue" placeholder="Enter text"></ion-input>
-        <ion-button @click="testPlugin">Test Plugin</ion-button>
-        <p><ion-label>Result: {{ result }}</ion-label></p>
+        <ion-button @click="start()">Start</ion-button>
+        <ion-button @click="stop()">Stop</ion-button>
       </div>
 
     </ion-content>
@@ -18,18 +20,36 @@
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonLabel, IonButton, IonInput } from '@ionic/vue';
-import { ref } from 'vue';
-import { AudioRecorder } from '@xinexcom/capacitor-plugin-audiorecorder';
+import { onMounted, onUnmounted, ref } from 'vue';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonButton, IonLabel } from '@ionic/vue';
+import { AudioRecorder, RecorderState } from '@xinexcom/capacitor-plugin-audiorecorder'
 
-const inputValue = ref('Hello World')
-const result = ref('')
+const engineState = ref(<RecorderState>'idle')
+const engineVersion = ref(<string>'')
 
-const testPlugin = async () => {
-  const res = await AudioRecorder.echo({ value: inputValue.value })
-  result.value = res.value
+function start() {
+  console.log(`[App] start`)
+  AudioRecorder.start()
 }
+
+function stop() {
+  console.log(`[App] stop`)
+  AudioRecorder.stop()
+}
+
+onMounted(async () => {
+  const result = await AudioRecorder.getVersion()
+  engineVersion.value = result.value
+
+  AudioRecorder.addListener('stateChanged', (data: any) => {
+    console.log(`[App] engine event: ${data.state}`)
+    engineState.value = data.state;
+  })
+})
+
+onUnmounted(async () => {
+  await AudioRecorder.removeAllListeners()
+})
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

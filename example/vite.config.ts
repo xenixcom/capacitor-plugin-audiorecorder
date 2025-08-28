@@ -19,5 +19,13 @@ export default defineConfig({
   test: {
     globals: true,
     environment: 'jsdom'
-  }
+  },
+  server: {
+    fs: {
+      allow: [
+        '..',
+        path.resolve(__dirname, '../dist'),
+      ],
+    },
+  },
 })
