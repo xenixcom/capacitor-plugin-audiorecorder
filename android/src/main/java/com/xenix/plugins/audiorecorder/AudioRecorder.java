@@ -5,7 +5,8 @@ import com.getcapacitor.Logger;
 public class AudioRecorder {
 
     public String echo(String value) {
-        Logger.info("Echo", value);
+        value = value + " from android";
+        Logger.info("Echo:", value);
         return value;
     }
 }
