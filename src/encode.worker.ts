@@ -1,9 +1,4 @@
-/**
- * Path: /src/workers/AudioWorker.ts
- * Description:
- *   Web Worker for receiving PCM samples from AudioWorklet,
- *   encoding to WAV or MP3, and returning a Blob.
- */
+/// <reference lib="webworker" />
 
 import { Mp3Encoder } from '@breezystack/lamejs'
 
@@ -82,7 +77,7 @@ self.onmessage = (e: MessageEvent) => {
 
   switch (data.cmd) {
     case 'init': {
-      console.log('[WORKER] INIT config', data.config)
+      console.log(`[Worker] init config: ${JSON.stringify(data.config)}`)
       config = data.config
       initialized = true
 
@@ -100,13 +95,11 @@ self.onmessage = (e: MessageEvent) => {
     }
 
     case 'encode': {
-      // console.log('[WORKER] ENCODE', data.bufferL?.length, data.bufferR?.length) 有
+      console.log(`[Worker] encode data length: ${data.bufferL?.length}, ${data.bufferR?.length}`)
       if (!initialized) return
-      console.log('[WORKER] ENCODE', data.bufferL?.length, data.bufferR?.length)
 
       const bufferL = data.bufferL as Float32Array
       const bufferR = data.bufferR as Float32Array | undefined
-
       const leftPCM = floatTo16BitPCM(bufferL)
 
       if (config.format === 'mp3') {
@@ -128,11 +121,11 @@ self.onmessage = (e: MessageEvent) => {
           wavBuffers.push(leftPCM)
         }
       }
-
       break
     }
 
     case 'finish': {
+      console.log(`[Worker] finish`)
       if (!initialized) return
 
       if (config.format === 'mp3') {

@@ -15,10 +15,7 @@ self.onmessage = (e: MessageEvent) => {
     }
     case 'finish': {
       console.log(`[Worker] finish data: ${JSON.stringify(data)}`)
-      self.postMessage({
-        cmd: 'end',
-        url: 'test'
-      })
+      ;(self as any).postMessage({ cmd: 'end', url: 'test' })
       break
     }
   }
