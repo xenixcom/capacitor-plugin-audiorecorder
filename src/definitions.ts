@@ -1,24 +1,14 @@
 import type { PluginListenerHandle } from '@capacitor/core';
+import { RecorderState, RecorderOptions } from './options';
 
-export type RecorderState = 'idle' | 'recording';
-
-export interface RecorderOptions {
-  channels?: 1 | 2;
-  sampleRate?: number;
-  sampleSize?: number;
-  echoCancellation?: boolean;
-  noiseSuppression?: boolean;
-  autoGainControl?: boolean;
-  format?: 'wav' | 'mp3';
-  monitorPlayback?: boolean;
-}
+export * from './options'
 
 export interface AudioRecorderPlugin {
   getVersion(): Promise<{ value: string }>;
   getAnalyser(): AnalyserNode | null;
   getAudioUrl(): string | null;
 
-  start(options?: Partial<RecorderOptions>): Promise<void>;
+  start(auto?: boolean, options?: Partial<RecorderOptions>): Promise<void>;
   stop(): Promise<void>;
 
   downloadAudio?(filename?: string): void;

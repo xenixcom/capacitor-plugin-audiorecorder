@@ -55,7 +55,7 @@ const formattedTime = computed(() => {
 
 function start() {
   console.log(`[App] start`);
-  AudioRecorder.start({format: 'wav'});
+  AudioRecorder.start()
 }
 
 function stop() {
